@@ -2,4 +2,6 @@
     <string name="app_name">Oblique Strategies</string>
 
     <string name="subtitle">Over One Hundred Worthwhile Dilemmas</string>
+
+    <string name="card_missing">Error#8230 Card not found</string>
 </resources>
