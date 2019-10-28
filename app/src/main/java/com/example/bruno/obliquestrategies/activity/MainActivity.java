@@ -18,10 +18,9 @@ public class MainActivity extends AppCompatActivity {
     private Deck mDeck;
 
     /** TODO:
-     * Support portrait and landscape mode
+     * Fix crash in landscape mode
      * Full screen
      * correctly format text
-     * implement changePerspectives()
      **/
 
     @Override
@@ -71,9 +70,4 @@ public class MainActivity extends AppCompatActivity {
         super.onRestart();
         Log.i(TAG, "onRestart... Calling onStart.");
     }
-
-    //  This method will change the background and text colours.
-    //  It will be called each time the screen is touched, along
-    //  with drawCard.
-    private void changePerspective() {}
 }
