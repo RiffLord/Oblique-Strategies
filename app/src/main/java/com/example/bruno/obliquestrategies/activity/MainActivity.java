@@ -21,9 +21,6 @@ public class MainActivity extends AppCompatActivity {
     private Deck mDeck;
 
     /** TODO:
-     * onPause saves the currently displayed card and
-     * onRestart displays the currently stored card, if any
-     *
      * Support portrait and landscape mode
      * Full screen
      **/

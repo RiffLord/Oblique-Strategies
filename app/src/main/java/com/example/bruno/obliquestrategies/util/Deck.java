@@ -19,6 +19,7 @@ public class Deck {
 
     private AssetManager mAssets;
     private static int m_nCards = 0;
+    private Random mCardToDraw;
 
     //  Any drawn card will be added to this list
     //  its contents will be compared each time to
@@ -27,7 +28,13 @@ public class Deck {
     private ArrayList<Integer> mUsedCardIndexes;
 
     public Deck(View view) {
+        mCardToDraw = new Random();
+        //  Used for pseudo-random number generation
+        mCardToDraw.setSeed(SystemClock.currentThreadTimeMillis());
+
         mUsedCardIndexes = new ArrayList<Integer>();
+        Log.i(TAG, "mUsedCardIndexes.isEmpty(): " + mUsedCardIndexes.isEmpty());
+
         //  Obtains a reference to the mAssets directory
         mAssets = view.getContext().getAssets();
 
@@ -52,6 +59,24 @@ public class Deck {
         }
     }
 
+    private int shuffle() {
+        //  Generates a random number, no bigger than the value of m_nCards
+        int nNextCard = mCardToDraw.nextInt(m_nCards);
+        Log.i(TAG, "New card index: " + nNextCard);
+
+        if (mUsedCardIndexes.isEmpty()) {
+            //  Adds the index to the list of drawn card indexes
+            mUsedCardIndexes.add(nNextCard);
+        } else {
+            if (!(mUsedCardIndexes.contains(nNextCard)))
+                mUsedCardIndexes.add(nNextCard);
+
+            else shuffle();
+        }
+
+        return nNextCard;
+    }
+
     //  Accesses the deck file and draws a random card from it
     public String drawCard() {
         Log.i(TAG, "Drawing a new card...");
@@ -65,31 +90,9 @@ public class Deck {
             InputStream deckStream = mAssets.open("deck");
             BufferedReader deckReader = new BufferedReader(new InputStreamReader(deckStream));
 
-            //  Used for pseudo-random number generation
-            Random cardToDraw = new Random();
-            cardToDraw.setSeed(SystemClock.currentThreadTimeMillis());
-
-            int nNextCard = cardToDraw.nextInt(m_nCards);
-            if (mUsedCardIndexes.isEmpty()) {
-                mUsedCardIndexes.add(nNextCard);
-            } else {
-                for (Integer i : mUsedCardIndexes) {
-                    Log.i(TAG, "Drawn card index: " + i);
-
-                    if (i == nNextCard) {
-                        nNextCard = cardToDraw.nextInt(m_nCards);
-
-                        Log.i(TAG, "New index generated: " + nNextCard);
-                    }
-                }
-
-                mUsedCardIndexes.add(nNextCard);
-            }
-
-
-            //  Generates a random number, no bigger than the value of m_nCards
             //  and iterates through the file up to that number
-            for (int i = 0; i < nNextCard; i++) {
+            int cardPosition = shuffle();
+            for (int i = 0; i < cardPosition; i++) {
                 cardContent = deckReader.readLine();
             }
 
