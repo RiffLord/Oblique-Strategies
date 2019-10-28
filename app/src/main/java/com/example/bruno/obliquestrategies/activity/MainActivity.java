@@ -79,4 +79,9 @@ public class MainActivity extends AppCompatActivity {
         super.onRestart();
         Log.i(TAG, "onRestart... Calling onStart.");
     }
+
+    //  This method will change the background and text colours.
+    //  It will be called each time the screen is touched, along
+    //  with drawCard.
+    private void changePerspective() {}
 }

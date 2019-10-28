@@ -12,6 +12,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 
+//  TODO: CODE CLEANUP
+
 public class Deck {
     private static final String TAG = "Deck";
 
@@ -22,9 +24,10 @@ public class Deck {
     //  its contents will be compared each time to
     //  the next card drawn in order to ensure that
     //  it wasn't already drawn in the current session
-    private ArrayList<String> mUsedCards;
+    private ArrayList<Integer> mUsedCardIndexes;
 
     public Deck(View view) {
+        mUsedCardIndexes = new ArrayList<Integer>();
         //  Obtains a reference to the mAssets directory
         mAssets = view.getContext().getAssets();
 
@@ -53,8 +56,6 @@ public class Deck {
     public String drawCard() {
         Log.i(TAG, "Drawing a new card...");
 
-        //  TODO: keep an array of drawn card indexes
-
         //  Creates a String instance to which the drawn card's text will be assigned
         String cardContent = new String();
         try {
@@ -68,10 +69,29 @@ public class Deck {
             Random cardToDraw = new Random();
             cardToDraw.setSeed(SystemClock.currentThreadTimeMillis());
 
+            int nNextCard = cardToDraw.nextInt(m_nCards);
+            if (mUsedCardIndexes.isEmpty()) {
+                mUsedCardIndexes.add(nNextCard);
+            } else {
+                for (Integer i : mUsedCardIndexes) {
+                    Log.i(TAG, "Drawn card index: " + i);
+
+                    if (i == nNextCard) {
+                        nNextCard = cardToDraw.nextInt(m_nCards);
+
+                        Log.i(TAG, "New index generated: " + nNextCard);
+                    }
+                }
+
+                mUsedCardIndexes.add(nNextCard);
+            }
+
+
             //  Generates a random number, no bigger than the value of m_nCards
             //  and iterates through the file up to that number
-            for (int i = 0; i < cardToDraw.nextInt(m_nCards); i++)
+            for (int i = 0; i < nNextCard; i++) {
                 cardContent = deckReader.readLine();
+            }
 
             //  ...reader is finally closed
             deckReader.close();
