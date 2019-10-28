@@ -12,17 +12,16 @@ import com.example.bruno.obliquestrategies.R;
 import com.example.bruno.obliquestrategies.util.Deck;
 
 public class MainActivity extends AppCompatActivity {
-    //  Tag for log messages
     private static final String TAG = "Eno";
 
-    //  View of the screen
     private View mScreenView;
-
     private Deck mDeck;
 
     /** TODO:
      * Support portrait and landscape mode
      * Full screen
+     * correctly format text
+     * implement changePerspectives()
      **/
 
     @Override
@@ -30,11 +29,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.i(TAG, "onCreate... Instantiating layout.");
+        Log.i(TAG, "onCreate... Instantiating layout & initializing deck.");
 
-        //  Obtains a reference to the activity_main.xml layout
         mScreenView = findViewById(R.id.layout);
-
         mDeck = new Deck(mScreenView);
     }
 
@@ -47,10 +44,8 @@ public class MainActivity extends AppCompatActivity {
         mScreenView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Log.i(TAG, "Received a Touch event...");
-
                 //  Obtains a reference to the title TextView of the layout;
-                //  the TextView will be used to display the card
+                //  this TextView will be used to display the card
                 final TextView card = findViewById(R.id.title);
 
                 //  Obtains a reference to the subtitle TextView and hides it from the screen
