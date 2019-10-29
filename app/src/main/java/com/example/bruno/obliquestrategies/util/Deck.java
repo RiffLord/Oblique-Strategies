@@ -46,6 +46,8 @@ public class Deck {
             }
             //  ...BufferedReader is closed
             deckReader.close();
+
+            Log.i(TAG, "Cards: " + m_nCards);
         } catch (IOException e) {
             Log.e(TAG, "Error opening deck file...");
             e.printStackTrace();
@@ -104,8 +106,8 @@ public class Deck {
 
         //  TODO: fix this
         //  If the [blank] card was drawn, hides the TextView
-        else if (cardContent.equals("[blank]\n"))
-            return "";
+        if (cardContent == "[blank]\n")
+            return "blank";
 
         else return "Card missing...";
     }

@@ -14,11 +14,14 @@ import com.example.bruno.obliquestrategies.util.Deck;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Eno";
 
-    private View mScreenView;
     private Deck mDeck;
 
+    //  UI Elements
+    private View mScreenView;
+    private TextView mCard;
+    private TextView mSubtitle;
+
     /** TODO:
-     * Fix crash in landscape mode
      * Full screen
      * correctly format text
      **/
@@ -28,10 +31,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.i(TAG, "onCreate... Instantiating layout & initializing deck.");
-
+        //  Sets up the views for the Activity's graphical elements
         mScreenView = findViewById(R.id.layout);
+        mCard = findViewById(R.id.title);
+        mSubtitle = findViewById(R.id.subtitle);
+
+        //  TODO: add the deck to the Bundle
         mDeck = new Deck(mScreenView);
+
+        if (savedInstanceState != null) {
+            Log.i(TAG, mCard.getText().toString());
+            mCard.setText(savedInstanceState.getString("card"));
+            mSubtitle.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -43,16 +55,14 @@ public class MainActivity extends AppCompatActivity {
         mScreenView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                //  Obtains a reference to the title TextView of the layout;
-                //  this TextView will be used to display the card
-                final TextView card = findViewById(R.id.title);
-
-                //  Obtains a reference to the subtitle TextView and hides it from the screen
-                final TextView subtitle = findViewById(R.id.subtitle);
-                subtitle.setVisibility(View.INVISIBLE);
+                //  Hides the subtitle
+                mSubtitle.setVisibility(View.INVISIBLE);
 
                 //  Handles the touch by calling the drawCard method
-                card.setText(mDeck.drawCard());
+                mCard.setText(mDeck.drawCard());
+
+                if (mCard.getText().toString().equals("blank"))
+                    mCard.setVisibility(View.INVISIBLE);
 
                 return false;
             }
@@ -66,8 +76,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.i(TAG, "onRestart... Calling onStart.");
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString("card", mCard.getText().toString());
     }
 }
