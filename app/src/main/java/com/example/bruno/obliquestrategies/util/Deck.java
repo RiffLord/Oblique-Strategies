@@ -18,7 +18,7 @@ public class Deck {
 
     private AssetManager mAssets;
 
-    private static int m_nCards = 0;
+    private static int m_nCards;
     private Random mCardToDraw;
 
     //  The indexes of drawn cards are added to this list
@@ -26,6 +26,8 @@ public class Deck {
 
     //  Sets everything up to draw new cards
     public Deck(View view) {
+        m_nCards = 0;
+
         //  Sets up pseudo-random number generation
         mCardToDraw = new Random();
         mCardToDraw.setSeed(SystemClock.currentThreadTimeMillis());
