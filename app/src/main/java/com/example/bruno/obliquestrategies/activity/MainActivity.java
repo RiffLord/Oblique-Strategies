@@ -1,5 +1,6 @@
 package com.example.bruno.obliquestrategies.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,10 +21,21 @@ public class MainActivity extends AppCompatActivity {
     private TextView mCard;
     private TextView mSubtitle;
 
+    private static int m_nClickCount = 0;
+
     /** TODO:
      * Full screen
-     * correctly format text
      **/
+
+    private void changeLayout(int n) {
+        if (n % 2 == 0) {
+            mScreenView.setBackgroundColor(getResources().getColor(R.color.backgroundDark));
+            mCard.setTextColor(Color.WHITE);
+        } else {
+            mScreenView.setBackgroundColor(Color.WHITE);
+            mCard.setTextColor(getResources().getColor(R.color.backgroundDark));
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
                 mSubtitle.setVisibility(View.VISIBLE);
 
             else mSubtitle.setVisibility(View.INVISIBLE);
+
+            changeLayout(savedInstanceState.getInt("layout"));
         }
     }
 
@@ -58,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
                 //  Hides the subtitle
                 mSubtitle.setVisibility(View.INVISIBLE);
 
+                m_nClickCount++;
+                changeLayout(m_nClickCount);
+
                 //  Handles the touch by calling the drawCard method
                 mCard.setText(mDeck.drawCard());
 
@@ -70,5 +87,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("card", mCard.getText().toString());
+        //  Saves the click counter state to set the correct
+        //  layout colours when restarting the Activity
+        outState.putInt("layout", m_nClickCount);
     }
 }

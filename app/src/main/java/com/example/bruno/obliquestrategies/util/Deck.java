@@ -12,6 +12,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 
+//  TODO: text formatting, add Aileron Thin font
+
 //  Utility class which accesses the deck file using an AssetManager and draws random cards
 public class Deck {
     private static final String TAG = "Deck";
@@ -104,6 +106,21 @@ public class Deck {
             e.printStackTrace();
         }
 
-        return cardContent;
+        return formatText(cardContent);
+    }
+
+    //  Returns a formatted String, ready to be displayed on-screen
+    private String formatText(String sCard) {
+        String formattedCard;
+
+        if (sCard.contains(" - "))
+            formattedCard = sCard.replaceAll(" - ", "\n-");
+
+        if (sCard.contains(" -"))
+            formattedCard = sCard.replaceAll(" -", "\n");
+
+        else return sCard;
+
+        return formattedCard;
     }
 }
