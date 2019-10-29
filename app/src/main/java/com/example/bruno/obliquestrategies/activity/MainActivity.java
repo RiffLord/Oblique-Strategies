@@ -1,7 +1,6 @@
 package com.example.bruno.obliquestrategies.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -36,20 +35,21 @@ public class MainActivity extends AppCompatActivity {
         mCard = findViewById(R.id.title);
         mSubtitle = findViewById(R.id.subtitle);
 
-        //  TODO: add the deck to the Bundle
         mDeck = new Deck(mScreenView);
 
         if (savedInstanceState != null) {
-            Log.i(TAG, mCard.getText().toString());
             mCard.setText(savedInstanceState.getString("card"));
-            mSubtitle.setVisibility(View.INVISIBLE);
+
+            if (mCard.getText().toString().equals(getResources().getString(R.string.app_name)))
+                mSubtitle.setVisibility(View.VISIBLE);
+
+            else mSubtitle.setVisibility(View.INVISIBLE);
         }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(TAG, "onStart... Touch listener set up.");
 
         //  Sets up a listener which waits for a touch event
         mScreenView.setOnTouchListener(new View.OnTouchListener() {
@@ -61,24 +61,14 @@ public class MainActivity extends AppCompatActivity {
                 //  Handles the touch by calling the drawCard method
                 mCard.setText(mDeck.drawCard());
 
-                if (mCard.getText().toString().equals("blank"))
-                    mCard.setVisibility(View.INVISIBLE);
-
                 return false;
             }
         });
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        Log.i(TAG, "onPause...");
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         outState.putString("card", mCard.getText().toString());
     }
 }

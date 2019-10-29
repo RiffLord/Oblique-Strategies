@@ -22,17 +22,16 @@ public class Deck {
     private Random mCardToDraw;
 
     //  The indexes of drawn cards are added to this list
-    private ArrayList<Integer> mUsedCardIndexes;
+    private static ArrayList<Integer> mUsedCardIndexes = new ArrayList<>();
 
     //  Sets everything up to draw new cards
     public Deck(View view) {
+        Log.i(TAG, "Size of mUsedCardIndexes: " + mUsedCardIndexes.size());
         m_nCards = 0;
 
         //  Sets up pseudo-random number generation
         mCardToDraw = new Random();
         mCardToDraw.setSeed(SystemClock.currentThreadTimeMillis());
-
-        mUsedCardIndexes = new ArrayList<>();
 
         //  Obtains a reference to the assets directory
         mAssets = view.getContext().getAssets();
@@ -62,12 +61,14 @@ public class Deck {
         int nNextCard = mCardToDraw.nextInt(m_nCards);
         Log.i(TAG, "New card index: " + nNextCard);
 
-        if (mUsedCardIndexes.isEmpty()) {
-            //  Adds the index to the list of drawn card indexes
-            mUsedCardIndexes.add(nNextCard);
-        } else if (mUsedCardIndexes.size() == m_nCards) {   //  If the size of the drawn card list is equal to the size of the deck
+        if (mUsedCardIndexes.size() == m_nCards) {   //  If the size of the drawn card list is equal to the size of the deck
             //  Clears the list allowing the user to continue drawing cards
             mUsedCardIndexes.clear();
+            mUsedCardIndexes.add(nNextCard);
+        }
+
+        if (mUsedCardIndexes.isEmpty()) {
+            //  Adds the index to the list of drawn card indexes
             mUsedCardIndexes.add(nNextCard);
         } else {
             if (!(mUsedCardIndexes.contains(nNextCard)))
@@ -84,7 +85,7 @@ public class Deck {
     //  Accesses the deck file and draws a random card from it, returning it as a String
     public String drawCard() {
         //  Creates a String instance to which the drawn card's text will be assigned
-        String cardContent = new String();
+        String cardContent = "";
         try {
             //  Opens the file & reader...
             InputStream deckStream = mAssets.open("deck");
@@ -103,14 +104,6 @@ public class Deck {
             e.printStackTrace();
         }
 
-        if (cardContent != null)
-            return cardContent;
-
-        //  TODO: fix this
-        //  If the [blank] card was drawn, hides the TextView
-        if (cardContent == "[blank]\n")
-            return "blank";
-
-        else return "Card missing...";
+        return cardContent;
     }
 }
