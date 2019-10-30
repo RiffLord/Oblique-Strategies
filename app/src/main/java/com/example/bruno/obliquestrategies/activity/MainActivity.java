@@ -1,19 +1,17 @@
 package com.example.bruno.obliquestrategies.activity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.bruno.obliquestrategies.R;
 import com.example.bruno.obliquestrategies.util.Deck;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "Eno";
-
     private Deck mDeck;
 
     //  UI Elements
@@ -21,19 +19,20 @@ public class MainActivity extends AppCompatActivity {
     private TextView mCard;
     private TextView mSubtitle;
 
+    //  Keeps track of the number of times
+    //  a user has clicked on the screen in
+    //  order to alternate between light and
+    //  dark layouts
     private static int m_nClickCount = 0;
 
-    /** TODO:
-     * Full screen
-     **/
-
+    //  Alternates between a dark background and white text & white background and dark text
     private void changeLayout(int n) {
         if (n % 2 == 0) {
-            mScreenView.setBackgroundColor(getResources().getColor(R.color.backgroundDark));
-            mCard.setTextColor(Color.WHITE);
+            mScreenView.setBackgroundColor(ContextCompat.getColor(this, R.color.dark));
+            mCard.setTextColor(ContextCompat.getColor(this, R.color.white));
         } else {
-            mScreenView.setBackgroundColor(Color.WHITE);
-            mCard.setTextColor(getResources().getColor(R.color.backgroundDark));
+            mScreenView.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
+            mCard.setTextColor(ContextCompat.getColor(this, R.color.dark));
         }
     }
 
@@ -49,12 +48,15 @@ public class MainActivity extends AppCompatActivity {
 
         mDeck = new Deck(mScreenView);
 
+        //  Restores the state if the Activity is restarted
         if (savedInstanceState != null) {
             mCard.setText(savedInstanceState.getString("card"));
 
+            //  If the screen was rotated before a card was drawn, the subtitle is still visible
             if (mCard.getText().toString().equals(getResources().getString(R.string.app_name)))
                 mSubtitle.setVisibility(View.VISIBLE);
 
+            //  If a card was drawn, the subtitle is hidden
             else mSubtitle.setVisibility(View.INVISIBLE);
 
             changeLayout(savedInstanceState.getInt("layout"));
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 m_nClickCount++;
                 changeLayout(m_nClickCount);
 
-                //  Handles the touch by calling the drawCard method
+                //  Obtains a card from the deck and displays it on-screen
                 mCard.setText(mDeck.drawCard());
 
                 return false;
@@ -87,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("card", mCard.getText().toString());
+
         //  Saves the click counter state to set the correct
         //  layout colours when restarting the Activity
         outState.putInt("layout", m_nClickCount);
