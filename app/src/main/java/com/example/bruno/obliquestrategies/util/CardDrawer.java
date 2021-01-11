@@ -13,21 +13,21 @@ import java.util.ArrayList;
 import java.util.Random;
 
 //  Utility class which accesses the deck file using an AssetManager and draws random cards
-public class Deck {
-    private static final String TAG = "Deck";
+public class CardDrawer {
+    private static final String TAG = "CardDrawer";
 
-    private AssetManager mAssets;
+    private final AssetManager mAssets;
 
-    private static int m_nCards;
+    private static int mCardCount;
     private Random mCardToDraw;
 
     //  The indexes of drawn cards are added to this list
-    private static ArrayList<Integer> mUsedCardIndexes = new ArrayList<>();
+    private static ArrayList<String> mDrawnCardsList;
 
     //  Sets everything up to draw new cards
-    public Deck(View view) {
-        Log.i(TAG, "Size of mUsedCardIndexes: " + mUsedCardIndexes.size());
-        m_nCards = 0;
+    public CardDrawer(View view) {
+        mCardCount = 0;
+        mDrawnCardsList = new ArrayList<>();
 
         //  Sets up pseudo-random number generation
         mCardToDraw = new Random();
@@ -43,7 +43,7 @@ public class Deck {
 
             //  Counts the cards in the deck file
             while (deckReader.readLine() != null) {
-                m_nCards++;
+                mCardCount++;
             }
             //  ...BufferedReader is closed
             deckReader.close();
@@ -56,34 +56,18 @@ public class Deck {
     //  Returns a random integer representing the position of a card within the deck
     private int shuffle() {
         //  Generates a random number, no bigger than the size of the deck
-        int nNextCard = mCardToDraw.nextInt(m_nCards);
+        int nNextCard = mCardToDraw.nextInt(mCardCount);
         Log.i(TAG, "New card index: " + nNextCard);
 
-        if (mUsedCardIndexes.size() == m_nCards) {   //  If the size of the drawn card list is equal to the size of the deck
-            //  Clears the list allowing the user to continue drawing cards
-            mUsedCardIndexes.clear();
-            mUsedCardIndexes.add(nNextCard);
-        }
-
-        if (mUsedCardIndexes.isEmpty()) {
-            //  Adds the index to the list of drawn card indexes
-            mUsedCardIndexes.add(nNextCard);
-        } else {
-            if (!(mUsedCardIndexes.contains(nNextCard)))
-                mUsedCardIndexes.add(nNextCard);
-
-            //  If the number generated is already in the list
-            //  the method calls itself to generate a new number
-            else shuffle();
-        }
+        if (mDrawnCardsList.size() == mCardCount)
+            mDrawnCardsList.clear();    //  Clears the list allowing the user to continue drawing cards
 
         return nNextCard;
     }
 
     //  Accesses the deck file and draws a random card from it, returning it as a String
     public String drawCard() {
-        //  Creates a String instance to which the drawn card's text will be assigned
-        String cardContent = "";
+        String cardText = "";
         try {
             //  Opens the file & reader...
             InputStream deckStream = mAssets.open("deck");
@@ -92,9 +76,9 @@ public class Deck {
             //  ...obtains a number...
             int cardPosition = shuffle();
             //  ...and iterates through the file up to the specified position
-            for (int i = 0; i < cardPosition; i++) {
-                cardContent = deckReader.readLine();
-            }
+            for (int i = 0; i < cardPosition; i++) cardText = deckReader.readLine();
+
+            if (mDrawnCardsList.contains(cardText)) drawCard();  //  Obtains a new card index in case the current card was previously drawn
 
             deckReader.close();
         } catch (IOException e) {
@@ -102,21 +86,25 @@ public class Deck {
             e.printStackTrace();
         }
 
-        return formatText(cardContent);
+        Log.d(TAG, cardText);
+
+        return formatText(cardText);
     }
 
     //  Returns a formatted String, ready to be displayed on-screen
     private String formatText(String sCard) {
-        String formattedCard;
+        String formattedCard = "";
+
+        Log.d(TAG, sCard);
 
         if (sCard.contains(" - "))
             formattedCard = sCard.replaceAll(" - ", "\n-");
 
-        else if (sCard.contains(" -"))
+        if (sCard.contains(" -"))
             formattedCard = sCard.replaceAll(" -", "\n");
 
-        else return sCard;
+        if (formattedCard.equals("")) return sCard;
 
-        return formattedCard;
+        else return formattedCard;
     }
 }

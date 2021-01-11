@@ -11,10 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.bruno.obliquestrategies.R;
-import com.example.bruno.obliquestrategies.util.Deck;
+import com.example.bruno.obliquestrategies.util.CardDrawer;
 
 public class MainActivity extends AppCompatActivity {
-    private Deck mDeck;
+    private CardDrawer mCardDrawer;
 
     //  UI Elements
     private View mScreenView;
@@ -26,11 +26,11 @@ public class MainActivity extends AppCompatActivity {
     //  a user has clicked on the screen in
     //  order to alternate between light and
     //  dark layouts
-    private static int m_nClickCount = 0;
+    private static int mClickCount = 0;
 
     //  Alternates between a dark background and white text & white background and dark text
     private void changeLayout(int n) {
-        mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out_dark);
+        mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
         mScreenView.startAnimation(mFade);
         if (n % 2 == 0) {
             mScreenView.setBackgroundColor(ContextCompat.getColor(this, R.color.dark));
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             mScreenView.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
             mCard.setTextColor(ContextCompat.getColor(this, R.color.dark));
         }
-        mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in_dark);
+        mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
         mScreenView.startAnimation(mFade);
     }
 
@@ -50,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
 
         //  Sets up the views for the Activity's graphical elements
         mScreenView = findViewById(R.id.layout);
-        mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in_dark);
+        mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
         mScreenView.startAnimation(mFade);
         mCard = findViewById(R.id.title);
         mSubtitle = findViewById(R.id.subtitle);
 
-        mDeck = new Deck(mScreenView);
+        mCardDrawer = new CardDrawer(mScreenView);
 
         //  Restores the state if the Activity is restarted
         if (savedInstanceState != null) {
@@ -83,11 +83,11 @@ public class MainActivity extends AppCompatActivity {
                 //  Hides the subtitle
                 mSubtitle.setVisibility(View.INVISIBLE);
 
-                m_nClickCount++;
-                changeLayout(m_nClickCount);
+                mClickCount++;
+                changeLayout(mClickCount);
 
                 //  Obtains a card from the deck and displays it on-screen
-                mCard.setText(mDeck.drawCard());
+                mCard.setText(mCardDrawer.drawCard());
 
                 return false;
             }
@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
         //  Saves the click counter state to set the correct
         //  layout colours when restarting the Activity
-        outState.putInt("layout", m_nClickCount);
+        outState.putInt("layout", mClickCount);
+        mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
     }
 }
