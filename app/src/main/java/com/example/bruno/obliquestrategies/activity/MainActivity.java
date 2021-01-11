@@ -3,6 +3,8 @@ package com.example.bruno.obliquestrategies.activity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     //  UI Elements
     private View mScreenView;
+    private Animation mFade;
     private TextView mCard;
     private TextView mSubtitle;
 
@@ -27,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
 
     //  Alternates between a dark background and white text & white background and dark text
     private void changeLayout(int n) {
+        mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out_dark);
+        mScreenView.startAnimation(mFade);
         if (n % 2 == 0) {
             mScreenView.setBackgroundColor(ContextCompat.getColor(this, R.color.dark));
             mCard.setTextColor(ContextCompat.getColor(this, R.color.white));
@@ -34,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
             mScreenView.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
             mCard.setTextColor(ContextCompat.getColor(this, R.color.dark));
         }
+        mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in_dark);
+        mScreenView.startAnimation(mFade);
     }
 
     @Override
@@ -43,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
         //  Sets up the views for the Activity's graphical elements
         mScreenView = findViewById(R.id.layout);
+        mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in_dark);
+        mScreenView.startAnimation(mFade);
         mCard = findViewById(R.id.title);
         mSubtitle = findViewById(R.id.subtitle);
 
