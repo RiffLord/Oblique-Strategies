@@ -11,7 +11,3 @@ This implementation is a very basic Android app. The user taps the screen to pro
 ## Installation
 
 Download & import the project into Android Studio click <b>Build > Build Bundle(s) / Build APK(s) > Build APK(s)</b>. Locate the APK file, copy it into the appropriate directory on your Android device & install.
-
-### Bugs
-
-The app is supposed to avoid re-drawing cards that were previously displayed if the user didn't draw all of the cards in the deck (174 currently), however duplicates are occasionally drawn as seen in the Log messages which keep track of the numeric indexes of the cards.
