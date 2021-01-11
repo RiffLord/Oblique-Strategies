@@ -14,4 +14,4 @@ Download & import the project into Android Studio click <b>Build > Build Bundle(
 
 ### Bugs
 
-The app is supposed to avoid re-drawing cards that were previously displayed if the user didn't draw more times than the number of cards in the deck (174 currently), however duplicates are occasionally drawn as seen in the Log messages which keep track of the numeric indexes of the cards.
+The app is supposed to avoid re-drawing cards that were previously displayed if the user didn't draw all of the cards in the deck (174 currently), however duplicates are occasionally drawn as seen in the Log messages which keep track of the numeric indexes of the cards.
