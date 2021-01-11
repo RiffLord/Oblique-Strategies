@@ -81,12 +81,12 @@ public class CardDrawer {
             if (mDrawnCardsList.contains(cardText)) drawCard();  //  Obtains a new card index in case the current card was previously drawn
 
             deckReader.close();
+
+            Log.d(TAG, cardPosition + ": " + cardText);
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
         }
-
-        Log.d(TAG, cardText);
 
         return formatText(cardText);
     }
@@ -94,8 +94,6 @@ public class CardDrawer {
     //  Returns a formatted String, ready to be displayed on-screen
     private String formatText(String sCard) {
         String formattedCard = "";
-
-        Log.d(TAG, sCard);
 
         if (sCard.contains(" - "))
             formattedCard = sCard.replaceAll(" - ", "\n-");
