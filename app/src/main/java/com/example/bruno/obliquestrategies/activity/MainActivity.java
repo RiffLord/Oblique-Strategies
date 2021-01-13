@@ -1,12 +1,15 @@
 package com.example.bruno.obliquestrategies.activity;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -21,7 +24,10 @@ public class MainActivity extends AppCompatActivity {
     private Animation mFade;
     private TextView mCard;
     private TextView mSubtitle;
+    private int mUiOptions;
+    private View mDecorView;
 
+    private Handler mHandler;
     //  Keeps track of the number of times
     //  a user has clicked on the screen in
     //  order to alternate between light and
@@ -32,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private void changeLayout(int n) {
         mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
         mScreenView.startAnimation(mFade);
+
         if (n % 2 == 0) {
             mScreenView.setBackgroundColor(ContextCompat.getColor(this, R.color.dark));
             mCard.setTextColor(ContextCompat.getColor(this, R.color.white));
@@ -41,6 +48,24 @@ public class MainActivity extends AppCompatActivity {
         }
         mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
         mScreenView.startAnimation(mFade);
+    }
+
+    private void hideStatusBar(final View decorView, final Context context) {
+
+        // Hide the status bar.
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                |    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE);
+        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                    hideStatusBar(decorView, context);
+                }
+            }
+        });
     }
 
     @Override
@@ -54,8 +79,13 @@ public class MainActivity extends AppCompatActivity {
         mScreenView.startAnimation(mFade);
         mCard = findViewById(R.id.title);
         mSubtitle = findViewById(R.id.subtitle);
+        mDecorView = getWindow().getDecorView();
 
-        mCardDrawer = new CardDrawer(mScreenView);
+        hideStatusBar(mDecorView, this);
+
+        //  Should prevent reinitializing the CardDrawer to make sure each card will be drawn at least once
+        if (mCardDrawer == null)
+            mCardDrawer = new CardDrawer(mScreenView);
 
         //  Restores the state if the Activity is restarted
         if (savedInstanceState != null) {
@@ -75,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         //  Sets up a listener which waits for a touch event
         mScreenView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -95,7 +124,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onResume() {
+        super.onResume();
+        hideStatusBar(mDecorView, this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("card", mCard.getText().toString());
 
