@@ -1,10 +1,15 @@
 package com.example.bruno.obliquestrategies.activity;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -12,9 +17,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.TextViewCompat;
 
 import com.example.bruno.obliquestrategies.R;
 import com.example.bruno.obliquestrategies.util.CardDrawer;
+import com.google.android.material.textview.MaterialTextView;
 
 public class MainActivity extends AppCompatActivity {
     private CardDrawer mCardDrawer;
@@ -22,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
     //  UI Elements
     private View mScreenView;
     private Animation mFade;
-    private TextView mCard;
-    private TextView mSubtitle;
+    private MaterialTextView mCard;
+    private MaterialTextView mSubtitle;
     private int mUiOptions;
     private View mDecorView;
 
@@ -36,22 +43,31 @@ public class MainActivity extends AppCompatActivity {
 
     //  Alternates between a dark background and white text & white background and dark text
     private void changeLayout(int n) {
+        Window w = getWindow(); // in Activity's onCreate() for instance
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
         mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
         mScreenView.startAnimation(mFade);
+
+        int navBarSettings = mDecorView.getSystemUiVisibility();
 
         if (n % 2 == 0) {
             mScreenView.setBackgroundColor(ContextCompat.getColor(this, R.color.dark));
             mCard.setTextColor(ContextCompat.getColor(this, R.color.white));
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.dark));
+            navBarSettings &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
         } else {
             mScreenView.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
             mCard.setTextColor(ContextCompat.getColor(this, R.color.dark));
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.white));
+            navBarSettings |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
         }
+        mDecorView.setSystemUiVisibility(navBarSettings);
         mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
         mScreenView.startAnimation(mFade);
     }
 
     private void hideStatusBar(final View decorView, final Context context) {
-
         // Hide the status bar.
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 |    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -78,10 +94,12 @@ public class MainActivity extends AppCompatActivity {
         mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
         mScreenView.startAnimation(mFade);
         mCard = findViewById(R.id.title);
+
         mSubtitle = findViewById(R.id.subtitle);
         mDecorView = getWindow().getDecorView();
 
         hideStatusBar(mDecorView, this);
+
 
         //  Should prevent reinitializing the CardDrawer to make sure each card will be drawn at least once
         if (mCardDrawer == null)
@@ -113,10 +131,12 @@ public class MainActivity extends AppCompatActivity {
                 mSubtitle.setVisibility(View.INVISIBLE);
 
                 mClickCount++;
-                changeLayout(mClickCount);
 
+                mCard.setText("");
                 //  Obtains a card from the deck and displays it on-screen
                 mCard.setText(mCardDrawer.drawCard());
+
+                changeLayout(mClickCount);
 
                 return false;
             }
