@@ -5,8 +5,8 @@
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark"
-    android:padding="8dp"
+    android:background="@color/colorPrimaryDark"
+    android:padding="@dimen/activity_margin"
     android:fitsSystemWindows="true"
     tools:context=".activity.MainActivity">
 <!--
@@ -30,7 +30,7 @@
     -->
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/title"
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -38,27 +38,11 @@
         android:textColor="@android:color/background_light"
         android:typeface="monospace"
         app:fontFamily="@font/pt_sans"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+        android:paddingHorizontal="@dimen/text_padding"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/subtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/subtitle_padding"
-        android:gravity="center_horizontal"
-        android:text="@string/subtitle"
-        android:textColor="@android:color/background_light"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:typeface="normal"
-        app:fontFamily="@font/pt_sans"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintVertical_bias="0.559" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

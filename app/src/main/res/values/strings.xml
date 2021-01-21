@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Oblique Strategies</string>
     <string name="subtitle">Over One Hundred Worthwhile Dilemmas</string>
+    <string name="title_activity_splash">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

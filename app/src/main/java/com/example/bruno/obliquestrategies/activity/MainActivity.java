@@ -28,9 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
     //  UI Elements
     private View mScreenView;
-    private Animation mFade;
+    public static Animation mFade;             //  FIND SOLUTION FOR THIS
     private MaterialTextView mCard;
-    private MaterialTextView mSubtitle;
     private int mUiOptions;
     private View mDecorView;
 
@@ -52,14 +51,14 @@ public class MainActivity extends AppCompatActivity {
         int navBarSettings = mDecorView.getSystemUiVisibility();
 
         if (n % 2 == 0) {
-            mScreenView.setBackgroundColor(ContextCompat.getColor(this, R.color.dark));
-            mCard.setTextColor(ContextCompat.getColor(this, R.color.white));
-            getWindow().setNavigationBarColor(getResources().getColor(R.color.dark));
+            mScreenView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+            mCard.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryLight));
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
             navBarSettings &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
         } else {
-            mScreenView.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
-            mCard.setTextColor(ContextCompat.getColor(this, R.color.dark));
-            getWindow().setNavigationBarColor(getResources().getColor(R.color.white));
+            mScreenView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryLight));
+            mCard.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLight));
             navBarSettings |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
         }
         mDecorView.setSystemUiVisibility(navBarSettings);
@@ -93,28 +92,23 @@ public class MainActivity extends AppCompatActivity {
         mScreenView = findViewById(R.id.layout);
         mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
         mScreenView.startAnimation(mFade);
-        mCard = findViewById(R.id.title);
+        mCard = findViewById(R.id.card);
 
-        mSubtitle = findViewById(R.id.subtitle);
         mDecorView = getWindow().getDecorView();
 
         hideStatusBar(mDecorView, this);
 
 
         //  Should prevent reinitializing the CardDrawer to make sure each card will be drawn at least once
-        if (mCardDrawer == null)
+        if (mCardDrawer == null) {
             mCardDrawer = new CardDrawer(mScreenView);
+            mCard.setText(mCardDrawer.drawCard());
+        }
 
         //  Restores the state if the Activity is restarted
         if (savedInstanceState != null) {
             mCard.setText(savedInstanceState.getString("card"));
 
-            //  If the screen was rotated before a card was drawn, the subtitle is still visible
-            if (mCard.getText().toString().equals(getResources().getString(R.string.app_name)))
-                mSubtitle.setVisibility(View.VISIBLE);
-
-            //  If a card was drawn, the subtitle is hidden
-            else mSubtitle.setVisibility(View.INVISIBLE);
 
             changeLayout(savedInstanceState.getInt("layout"));
         }
@@ -127,8 +121,6 @@ public class MainActivity extends AppCompatActivity {
         mScreenView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                //  Hides the subtitle
-                mSubtitle.setVisibility(View.INVISIBLE);
 
                 mClickCount++;
 
