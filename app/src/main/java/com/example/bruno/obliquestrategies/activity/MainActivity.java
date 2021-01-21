@@ -1,23 +1,18 @@
 package com.example.bruno.obliquestrategies.activity;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.TextViewCompat;
 
 import com.example.bruno.obliquestrategies.R;
 import com.example.bruno.obliquestrategies.util.CardDrawer;
@@ -33,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     private int mUiOptions;
     private View mDecorView;
 
-    private Handler mHandler;
     //  Keeps track of the number of times
     //  a user has clicked on the screen in
     //  order to alternate between light and
@@ -50,16 +44,20 @@ public class MainActivity extends AppCompatActivity {
 
         int navBarSettings = mDecorView.getSystemUiVisibility();
 
-        if (n % 2 == 0) {
+        if (n % 2 != 0) {
             mScreenView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
             mCard.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryLight));
             getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
-            navBarSettings &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                navBarSettings &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            }
         } else {
             mScreenView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryLight));
             mCard.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
             getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLight));
-            navBarSettings |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                navBarSettings |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            }
         }
         mDecorView.setSystemUiVisibility(navBarSettings);
         mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
