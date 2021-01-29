@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.bruno.obliquestrategies.R;
 
 public class SplashActivity extends AppCompatActivity {
-    private static final int SPLASH_TIMEOUT = 4000; //  Delay before opening main activity
+    private static final int SPLASH_TIMEOUT = 5000; //  Delay before opening main activity
     /**
      * Some older devices needs a small delay between UI widget updates
      * and a change of the status and navigation bar.
@@ -60,14 +60,12 @@ public class SplashActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_splash);
         mContentView = findViewById(R.id.fullscreen_content);
-
-        MainActivity.mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
+        MainActivity.mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
         MainActivity.mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
         mTimeoutHandler.postDelayed(new Runnable() {
             @Override

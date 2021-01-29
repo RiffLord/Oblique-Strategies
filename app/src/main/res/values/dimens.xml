@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="splash_margin">8dp</dimen>
-    <dimen name="activity_margin">16dp</dimen>
+    <dimen name="activity_padding_navbar">48dp</dimen>
     <dimen name="text_padding">8dp</dimen>
     <dimen name="subtitle_padding">4dp</dimen>
+    <dimen name="elevation">8dp</dimen>
+    <dimen name="card_corner_radius">16dp</dimen>
+    <dimen name="card_content_padding">16dp</dimen>
 </resources>
