@@ -5,7 +5,7 @@ an artist should approach a particular work. Each card offers a single suggestio
 
 ## Description
 
-This implementation is a very basic Android app. The user taps the screen to prompt the app to read a random line from the text file containing all of the cards' contents.
+This implementation is a very basic Android app. The user swipes left on the screen to prompt the app to read a random line from the text file containing all of the cards' contents. They can also swipe right to view previously drawn cards.
 
 
 ## Installation
