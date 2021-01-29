@@ -72,7 +72,6 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        getWindow().setNavigationBarColor(Color.TRANSPARENT);
 
         //  Instantiate a ViewPager2 and a PagerAdapter
         mViewPager = findViewById(R.id.pager);
@@ -88,7 +87,7 @@ public class MainActivity extends FragmentActivity {
         mDecorView = getWindow().getDecorView();
 
         //  Removing this makes status bar fully transparent, however the card intersects with the Notch
-        hideStatusBar(mDecorView, this);
+        hideStatusBar(mDecorView);
     }
 
     @Override
@@ -97,7 +96,9 @@ public class MainActivity extends FragmentActivity {
 
         mGestureDetector = new GestureDetector(this, new GestureDetector.OnGestureListener() {
             @Override
-            public boolean onDown(MotionEvent e) { return false; }
+            public boolean onDown(MotionEvent e) {
+                return false;
+            }
             @Override
             public void onShowPress(MotionEvent e) {}
             @Override
@@ -115,23 +116,29 @@ public class MainActivity extends FragmentActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        hideStatusBar(mDecorView);
+    }
+
+    @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
     }
 
-    private void hideStatusBar(final View decorView, final Context context) {
+    private void hideStatusBar(final View decorView) {
         // Hide the status bar.
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE);
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
             @Override
             public void onSystemUiVisibilityChange(int visibility) {
                 if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                    hideStatusBar(decorView, context);
+                    hideStatusBar(decorView);
                 }
             }
         });

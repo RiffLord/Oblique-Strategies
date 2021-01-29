@@ -9,4 +9,5 @@
         <item name="fullscreenBackgroundColor">@color/colorPrimaryDark</item>
         <item name="fullscreenTextColor">@color/colorPrimaryLight</item>
     </style>
+
 </resources>
