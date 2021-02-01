@@ -7,8 +7,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme.Fullscreen">
+        android:supportsRtl="true">
         <activity
             android:name=".activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -22,7 +21,7 @@
         </activity>
         <activity android:name=".activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.Fullscreen"/>
+            android:theme="@style/AppTheme"/>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

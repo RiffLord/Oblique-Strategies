@@ -1,7 +1,7 @@
 <resources>
 
     <style name="AppTheme.Fullscreen" parent="AppTheme">
-        <item name="android:actionBarStyle">@style/Widget.AppTheme.ActionBar.Fullscreen</item>
+        <item name="android:actionBarStyle">@style/ThemeOverlay.MaterialComponents.ActionBar</item>
         <item name="android:windowActionBarOverlay">true</item>
     </style>
 

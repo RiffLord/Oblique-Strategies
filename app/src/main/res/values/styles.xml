@@ -1,13 +1,10 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimaryDark</item>
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
+        <item name="colorPrimary">@color/colorPrimaryLight</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimaryLight</item>
-        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+        <item name="android:navigationBarColor">@color/colorPrimaryLight</item>
     </style>
 
     <style name="Widget.AppTheme.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">

@@ -2,15 +2,22 @@ package com.example.bruno.obliquestrategies.activity;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -20,7 +27,9 @@ import com.example.bruno.obliquestrategies.R;
 import com.example.bruno.obliquestrategies.fragment.CardFragment;
 import com.example.bruno.obliquestrategies.util.DepthPageTransformer;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
+    public static final String TAG = "MainActivity";
+
     private View mScreenView;
     public static Animation mFade;
 
@@ -71,7 +80,8 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         //  Instantiate a ViewPager2 and a PagerAdapter
         mViewPager = findViewById(R.id.pager);
@@ -128,8 +138,27 @@ public class MainActivity extends FragmentActivity {
         mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.equals(R.id.about)) displayAboutDialog();
+        if (item.equals(R.id.theme)) displayThemeDialog();
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void displayAboutDialog() {}
+
+    private void displayThemeDialog() {}
+
     private void hideStatusBar(final View decorView) {
         // Hide the status bar.
+        /*
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -142,5 +171,7 @@ public class MainActivity extends FragmentActivity {
                 }
             }
         });
+
+         */
     }
 }
