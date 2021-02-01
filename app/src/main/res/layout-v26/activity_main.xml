@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_padding_navbar"
-    android:paddingTop="8dp"
     tools:context=".activity.MainActivity"
     android:background="@color/colorPrimaryLight" >
 

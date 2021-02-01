@@ -2,4 +2,11 @@
     <string name="app_name">Oblique Strategies</string>
     <string name="subtitle">Over One Hundred Worthwhile Dilemmas</string>
     <string name="title_activity_splash">Oblique Strategies</string>
+    <string name="about">Oblique Strategies is a card-based method for promoting creativity created by Brian Eno and Peter Schmidt, first published in 1975.\nEach card contains a gnomic suggestion, aphorism or remark which can be used to break a deadlock or dilemma situation. A few are specific to music composition; others are more general.\n\n\"These cards evolved from separate observations of the principles underlying what we were doing. Sometimes they were recognised in retrospect (intellect catching up with intuition), sometimes they were identified as they were happening, sometimes they were formulated. They can be used as a pack, or by drawing a single card from the shuffled pack when a dilemma occurs in a working situation. In this case the card is trusted even if its appropriateness is quite unclear…\"\n</string>
+
+    <string name="about_title">About</string>
+    <string name="theme_title">Settings</string>
+    <string name="theme_dialog_msg">Choose a colour scheme for Oblique Strategies</string>
+    <string name="ok">OK</string>
+    <string name="close">Close</string>
 </resources>

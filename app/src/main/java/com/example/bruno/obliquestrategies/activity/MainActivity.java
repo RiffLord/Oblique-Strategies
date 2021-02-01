@@ -1,6 +1,7 @@
 package com.example.bruno.obliquestrategies.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -26,6 +28,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.bruno.obliquestrategies.R;
 import com.example.bruno.obliquestrategies.fragment.CardFragment;
 import com.example.bruno.obliquestrategies.util.DepthPageTransformer;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
@@ -147,14 +150,50 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.equals(R.id.about)) displayAboutDialog();
-        if (item.equals(R.id.theme)) displayThemeDialog();
+        switch (item.getItemId()) {
+            case R.id.about:
+                displayAboutDialog();
+                break;
+            case R.id.theme:
+                displayThemeDialog();
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 
-    private void displayAboutDialog() {}
+    private void displayAboutDialog() {
+        MaterialAlertDialogBuilder aboutDialogBuilder = new MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme);
+        aboutDialogBuilder.setTitle(getResources().getString(R.string.app_name));
+        aboutDialogBuilder.setMessage(getResources().getString(R.string.about));
+        aboutDialogBuilder.setNegativeButton(getResources().getString(R.string.close), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog aboutDialog = aboutDialogBuilder.create();
+        aboutDialog.show();
+    }
 
-    private void displayThemeDialog() {}
+    private void displayThemeDialog() {
+        MaterialAlertDialogBuilder themeDialogBuilder = new MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme);
+        themeDialogBuilder.setTitle(getResources().getString(R.string.theme_title));
+        themeDialogBuilder.setMessage(getResources().getString(R.string.theme_dialog_msg));
+        themeDialogBuilder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //  Save changes here
+            }
+        });
+        themeDialogBuilder.setNegativeButton(getResources().getString(R.string.close), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog themeDialog = themeDialogBuilder.create();
+        themeDialog.show();
+    }
 
     private void hideStatusBar(final View decorView) {
         // Hide the status bar.
