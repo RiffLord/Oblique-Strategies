@@ -5,13 +5,15 @@
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingEnd="@dimen/activity_padding_navbar"
+    android:paddingBottom="64dp"
     tools:context=".activity.MainActivity"
     android:background="@color/colorPrimaryLight"
     tools:ignore="RtlSymmetry">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"
+        android:paddingStart="@dimen/activity_padding_navbar"
+        android:paddingEnd="@dimen/activity_padding_navbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

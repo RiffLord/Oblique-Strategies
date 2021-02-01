@@ -1,21 +1,16 @@
 package com.example.bruno.obliquestrategies.activity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -31,14 +26,8 @@ import com.example.bruno.obliquestrategies.util.DepthPageTransformer;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String TAG = "MainActivity";
-
     private View mScreenView;
     public static Animation mFade;
-
-    private View mDecorView;
-
-    private GestureDetector mGestureDetector;
 
     //  Number of pages to display
     private static final int NUM_PAGES = 173;
@@ -47,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentStateAdapter mPagerAdapter;
 
     /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
+     * A simple pager adapter that represents a series of ScreenSlidePageFragment objects, in
      * sequence.
      */
     private class ScreenSlidePagerAdapter extends FragmentStateAdapter {
@@ -55,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
             super(fa);
         }
 
+        @NonNull
         @Override
         public Fragment createFragment(int position) {
             return new CardFragment();
@@ -94,51 +84,22 @@ public class MainActivity extends AppCompatActivity {
 
         //  Sets up the views for the Activity's graphical elements
         mScreenView = findViewById(R.id.layout);
-        mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
-        mScreenView.startAnimation(mFade);
-
-        mDecorView = getWindow().getDecorView();
-
-        //  Removing this makes status bar fully transparent, however the card intersects with the Notch
-        hideStatusBar(mDecorView);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        mGestureDetector = new GestureDetector(this, new GestureDetector.OnGestureListener() {
-            @Override
-            public boolean onDown(MotionEvent e) {
-                return false;
-            }
-            @Override
-            public void onShowPress(MotionEvent e) {}
-            @Override
-            public boolean onSingleTapUp(MotionEvent e) { return false; }
-            @Override
-            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) { return false; }
-            @Override
-            public void onLongPress(MotionEvent e) {}
-
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                return false;
-            }
-        });
+        mScreenView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in));
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setNavigationBarButtonsColor(getWindow().getNavigationBarColor());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        hideStatusBar(mDecorView);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
+    protected void onStop() {
+        super.onStop();
         mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
+        mScreenView.startAnimation(mFade);
     }
 
     @Override
@@ -150,14 +111,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.about:
-                displayAboutDialog();
-                break;
-            case R.id.theme:
-                displayThemeDialog();
-                break;
-        }
+        if (item.getItemId() == R.id.about) displayAboutDialog();
+        if (item.getItemId() == R.id.theme) displayThemeDialog();
         return super.onOptionsItemSelected(item);
     }
 
@@ -195,22 +150,20 @@ public class MainActivity extends AppCompatActivity {
         themeDialog.show();
     }
 
-    private void hideStatusBar(final View decorView) {
-        // Hide the status bar.
-        /*
-        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
-            @Override
-            public void onSystemUiVisibilityChange(int visibility) {
-                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                    hideStatusBar(decorView);
-                }
+    //  Makes navigation bar buttons dark if the background is light and vice versa
+    private void setNavigationBarButtonsColor(int navigationBarColor) {
+            View decorView = getWindow().getDecorView();
+            int flags = decorView.getSystemUiVisibility();
+            if (isColorLight(navigationBarColor)) {
+                flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            } else {
+                flags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
             }
-        });
+            decorView.setSystemUiVisibility(flags);
+    }
 
-         */
+    private boolean isColorLight(int color) {
+        double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
+        return darkness < 0.5;
     }
 }
