@@ -94,15 +94,19 @@ public class CardDrawer {
     //  Returns a formatted String, ready to be displayed on-screen
     private String formatText(String sCard) {
         String formattedCard = "";
+        String temp;
 
-        if (sCard.contains(" - "))
-            formattedCard = sCard.replaceAll(" - ", "\n-");
-
-        if (sCard.contains(" -"))
+        if (sCard.contains(" -")) {
             formattedCard = sCard.replaceAll(" -", "\n");
+            Log.d(TAG, formattedCard);
+        }
 
-        if (formattedCard.equals("")) return sCard;
+        if (formattedCard.contains(" _")) {
+            temp = formattedCard.replaceAll(" _", "\n\n");
+            sCard = temp;
+            Log.d(TAG, sCard);
+        }
 
-        else return formattedCard;
+        return sCard;
     }
 }

@@ -20,10 +20,10 @@ public class SplashActivity extends AppCompatActivity {
      */
     private static final int UI_ANIMATION_DELAY = 0;
 
-    private final Handler mTimeoutHandler = new Handler();
-
-    private final Handler mHideHandler = new Handler();
     private View mContentView;
+
+    private final Handler mTimeoutHandler = new Handler();
+    private final Handler mHideHandler = new Handler();
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
@@ -70,7 +70,7 @@ public class SplashActivity extends AppCompatActivity {
                 Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
-                mContentView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out));
+                //mContentView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out));
             }
         }, SPLASH_TIMEOUT);
     }

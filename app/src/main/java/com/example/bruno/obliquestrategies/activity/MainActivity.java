@@ -9,8 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -26,11 +24,7 @@ import com.example.bruno.obliquestrategies.util.DepthPageTransformer;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class MainActivity extends AppCompatActivity {
-    private View mScreenView;
-    public static Animation mFade;
-
-    //  Number of pages to display
-    private static final int NUM_PAGES = 173;
+    private static final int NUM_PAGES = 173;   //  Number of pages to display
 
     private ViewPager2 mViewPager;
     private FragmentStateAdapter mPagerAdapter;
@@ -40,20 +34,14 @@ public class MainActivity extends AppCompatActivity {
      * sequence.
      */
     private class ScreenSlidePagerAdapter extends FragmentStateAdapter {
-        public ScreenSlidePagerAdapter(FragmentActivity fa) {
-            super(fa);
-        }
+        public ScreenSlidePagerAdapter(FragmentActivity fa) { super(fa); }
 
         @NonNull
         @Override
-        public Fragment createFragment(int position) {
-            return new CardFragment();
-        }
+        public Fragment createFragment(int position) { return new CardFragment(); }
 
         @Override
-        public int getItemCount() {
-            return NUM_PAGES;
-        }
+        public int getItemCount() { return NUM_PAGES; }
     }
 
     @Override
@@ -83,8 +71,6 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setPageTransformer(new DepthPageTransformer());
 
         //  Sets up the views for the Activity's graphical elements
-        mScreenView = findViewById(R.id.layout);
-        mScreenView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in));
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setNavigationBarButtonsColor(getWindow().getNavigationBarColor());
     }
@@ -93,13 +79,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mFade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
-        mScreenView.startAnimation(mFade);
     }
 
     @Override
