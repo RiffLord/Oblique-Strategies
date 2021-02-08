@@ -1,7 +1,15 @@
 <resources>
 
-    <style name="ThemeOverlay.ObliqueStrategies.FullscreenContainer" parent="">
-        <item name="fullscreenBackgroundColor">@color/light_blue_900</item>
-        <item name="fullscreenTextColor">@color/light_blue_A400</item>
+    <style name="Theme.MaterialComponents.DayNight" parent="Theme.MaterialComponents"></style>
+
+    <style name="AppTheme.Fullscreen" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/ThemeOverlay.MaterialComponents.ActionBar</item>
+        <item name="android:windowActionBarOverlay">true</item>
     </style>
+
+    <style name="ThemeOverlay.ObliqueStrategies.FullscreenContainer" parent="AppTheme.Fullscreen">
+        <item name="fullscreenBackgroundColor">@color/colorPrimaryDark</item>
+        <item name="fullscreenTextColor">@color/colorPrimaryLight</item>
+    </style>
+
 </resources>

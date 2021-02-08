@@ -1,6 +1,7 @@
 package com.example.bruno.obliquestrategies.activity;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -22,8 +24,12 @@ import com.example.bruno.obliquestrategies.R;
 import com.example.bruno.obliquestrategies.fragment.CardFragment;
 import com.example.bruno.obliquestrategies.util.DepthPageTransformer;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String PREF_THEME = "theme";
+    private SharedPreferences mSettings;
+
     private static final int NUM_PAGES = 173;   //  Number of pages to display
 
     private ViewPager2 mViewPager;
@@ -73,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
         //  Sets up the views for the Activity's graphical elements
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setNavigationBarButtonsColor(getWindow().getNavigationBarColor());
+
+        mSettings = getSharedPreferences(PREF_THEME, MODE_PRIVATE);
     }
 
     @Override
@@ -112,13 +120,7 @@ public class MainActivity extends AppCompatActivity {
     private void displayThemeDialog() {
         MaterialAlertDialogBuilder themeDialogBuilder = new MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme);
         themeDialogBuilder.setTitle(getResources().getString(R.string.theme_title));
-        themeDialogBuilder.setMessage(getResources().getString(R.string.theme_dialog_msg));
-        themeDialogBuilder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //  Save changes here
-            }
-        });
+        themeDialogBuilder.setView(getSwitchView());
         themeDialogBuilder.setNegativeButton(getResources().getString(R.string.close), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -127,6 +129,30 @@ public class MainActivity extends AppCompatActivity {
         });
         AlertDialog themeDialog = themeDialogBuilder.create();
         themeDialog.show();
+    }
+
+    private View getSwitchView() {
+        View switchView = View.inflate(this, R.layout.theme_switch, null);
+        final SwitchMaterial switchMaterial = (SwitchMaterial) switchView.findViewById(R.id.switch_dark_mode);
+        switchMaterial.setChecked(loadSettings());
+        switchMaterial.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //  CHANGE APP THEME
+                saveSettings(isChecked);
+            }
+        });
+        return switchView;
+    }
+
+    private void saveSettings(boolean settings) {
+        mSettings = getSharedPreferences(PREF_THEME, MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = mSettings.edit();
+        prefEditor.putBoolean(PREF_THEME, settings).apply();
+    }
+
+    private boolean loadSettings() {
+        return mSettings.getBoolean(PREF_THEME, false);
     }
 
     //  Makes navigation bar buttons dark if the background is light and vice versa

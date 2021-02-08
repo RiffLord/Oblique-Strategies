@@ -17,7 +17,7 @@ import com.google.android.material.textview.MaterialTextView;
 import java.util.Objects;
 
 public class CardFragment extends Fragment {
-    private CardDrawer mCardDrawer;
+    private static CardDrawer mCardDrawer;
 
     private MaterialTextView mCard;
     private MaterialCardView mCardView;
@@ -47,10 +47,8 @@ public class CardFragment extends Fragment {
         mCard = getView().findViewById(R.id.card_text);;
 
         //  Should prevent reinitializing the CardDrawer to make sure each card will be drawn at least once
-        if (mCardDrawer == null) {
-            mCardDrawer = new CardDrawer(mLayoutView);
-            mCard.setText(mCardDrawer.drawCard());
-        }
+        if (mCardDrawer == null) mCardDrawer = new CardDrawer(mLayoutView);
+        mCard.setText(mCardDrawer.drawCard());
 
         //  Restores the state if the Activity is restarted
         if (savedInstanceState != null) mCard.setText(savedInstanceState.getString("card"));
