@@ -15,6 +15,7 @@ import android.widget.CompoundButton;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -67,20 +68,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mSettings = getSharedPreferences(PREF_THEME, MODE_PRIVATE);
+        if (mSettings.getBoolean(PREF_THEME, false))
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        else
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         getSupportActionBar().setTitle("");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        //  Sets up the views for the Activity's graphical elements
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setNavigationBarButtonsColor(getWindow().getNavigationBarColor());
 
         //  Instantiate a ViewPager2 and a PagerAdapter
         mViewPager = findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(this);
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setPageTransformer(new DepthPageTransformer());
-
-        //  Sets up the views for the Activity's graphical elements
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setNavigationBarButtonsColor(getWindow().getNavigationBarColor());
-
-        mSettings = getSharedPreferences(PREF_THEME, MODE_PRIVATE);
     }
 
     @Override
@@ -139,6 +144,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 //  CHANGE APP THEME
+                if (isChecked)
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                else
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 saveSettings(isChecked);
             }
         });

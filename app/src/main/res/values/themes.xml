@@ -10,8 +10,8 @@
     </style>
 
     <style name="ThemeOverlay.ObliqueStrategies.FullscreenContainer" parent="AppTheme.Fullscreen">
-        <item name="fullscreenBackgroundColor">@color/colorPrimaryDark</item>
-        <item name="fullscreenTextColor">@color/colorPrimaryLight</item>
+        <item name="fullscreenBackgroundColor">@color/primaryDarkColor</item>
+        <item name="fullscreenTextColor">@color/primaryLightColor</item>
     </style>
 
 </resources>

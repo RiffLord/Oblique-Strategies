@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:paddingBottom="64dp"
     tools:context=".activity.MainActivity"
-    android:background="@color/colorPrimaryLight"
+    android:background="@color/primaryLightColor"
     tools:ignore="RtlSymmetry">
 
     <androidx.viewpager2.widget.ViewPager2

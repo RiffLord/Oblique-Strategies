@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_padding_navbar"
     tools:context=".activity.MainActivity"
-    android:background="@color/colorPrimaryLight" >
+    android:background="@color/primaryLightColor" >
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"

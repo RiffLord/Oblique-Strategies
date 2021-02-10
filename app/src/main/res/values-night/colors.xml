@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryColor">#000000</color>
+    <color name="primaryLightColor">#000000</color>
+    <color name="primaryDarkColor">@color/cardview_dark_background</color>
+    <color name="secondaryColor">#e1f5fe</color>
+    <color name="secondaryLightColor">@color/cardview_dark_background</color>
+    <color name="secondaryDarkColor">@color/cardview_light_background</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#ffffff</color>
+</resources>

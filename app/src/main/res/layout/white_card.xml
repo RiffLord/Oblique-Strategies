@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_layout_white" >
+    android:id="@+id/card_layout_white"
+    android:background="@color/primaryLightColor">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
@@ -15,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:cardElevation="@dimen/elevation"
         app:cardCornerRadius="@dimen/card_corner_radius"
-        app:cardBackgroundColor="@color/cardview_light_background"
+        app:cardBackgroundColor="@color/secondaryLightColor"
         app:contentPadding="@dimen/card_content_padding"
         app:cardUseCompatPadding="true"
         app:cardPreventCornerOverlap="true" >
@@ -26,7 +27,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/app_name"
-            android:textColor="@color/cardview_dark_background"
+            android:textColor="@color/primaryTextColor"
             android:typeface="monospace"
             app:fontFamily="@font/pt_sans"
             android:paddingHorizontal="@dimen/text_padding"
