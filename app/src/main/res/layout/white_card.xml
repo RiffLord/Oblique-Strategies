@@ -24,13 +24,12 @@
             android:id="@+id/card_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fontFamily="sans-serif-thin"
             android:gravity="center"
-            android:text="@string/app_name"
-            android:textColor="@color/cardview_dark_background"
-            android:typeface="monospace"
-            app:fontFamily="@font/pt_sans"
             android:paddingHorizontal="@dimen/text_padding"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+            android:text="@string/app_name"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textColor="@color/cardview_dark_background" />
 
     </com.google.android.material.card.MaterialCardView>
 

@@ -99,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.about) displayAboutDialog();
-        if (item.getItemId() == R.id.theme) displayThemeDialog();
+        //  This will be added when dark mode is correctly implemented
+        //if (item.getItemId() == R.id.theme) displayThemeDialog();
         return super.onOptionsItemSelected(item);
     }
 
